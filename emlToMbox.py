@@ -80,6 +80,6 @@ def addFileToMbox( fi, dest_mbox ):
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        sys.stderr.write("Usage: ./emlToMbox.py input outbox.mbox")
+        sys.stderr.write("Usage: ./emlToMbox.py input outbox.mbox\n")
         sys.exit(1)
     sys.exit( main( sys.argv ) )
