@@ -1,22 +1,16 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """ Converts a directory full of .eml files to a single Unix "mbox" file.
+This is similar to http://www.cosmicsoft.net/emlxconvert.html
 
 Accepts as input either an individual .eml file or a directory containing one
 or more .eml files.
-
-The output mbox will be created if it doesn't already exist.  If it exists,
-it will be appended to.  There is no checking for duplicates, so use caution.
-If duplicate filtering is desired, it could be added to addFileToMbox().
-Inspired by http://www.cosmicsoft.net/emlxconvert.html
 
 Usage:
 $ ./emlToMbox.py inputdir/ output.mbox
 $ ./emlToMbox.py input.eml output.mbox
 
-Requires Python 2.5 or later
-
-STATUS:  Tested and appears to work.
+STATUS:  Lightly tested using Python 3.9.1 
 """
 
 import os
@@ -31,15 +25,15 @@ def main( arguments ):
     dest_name = arguments[2]
     
     if debug:
-        print "Input is:  " + infile_name
-        print "Output is: " + dest_name
+        print("Input is:  " + infile_name)
+        print("Output is: " + dest_name)
     
     dest_mbox = mailbox.mbox(dest_name, create=True) # if dest doesn't exist create it
     dest_mbox.lock() # lock the mbox file
     
     if os.path.isdir(infile_name):
         if debug:
-            print "Detected directory as input, using directory mode"
+            print("Detected directory as input, using directory mode")
         count = 0
         for filename in os.listdir(infile_name):
             if filename.split('.')[-1] == "eml":
@@ -53,11 +47,11 @@ def main( arguments ):
                 count += 1
                 fi.close()
         if debug:
-            print "Processed " + str(count) + " total files."
+            print("Processed " + str(count) + " total files.")
     
     if infile_name.split('.')[-1] == "eml":
         if debug:
-            print "Detected .eml file as input, using single file mode"
+            print("Detected .eml file as input, using single file mode")
         try:
             fi = open(infile_name, 'r')
         except:
@@ -71,7 +65,7 @@ def main( arguments ):
     return 0
 
 def addFileToMbox( fi, dest_mbox ):
-    # Any additional preprocessing logic goes here, e.g. duplicate filter
+    # Any additional preprocessing logic goes here...
     try:
         dest_mbox.add( fi )
     except:
