@@ -16,6 +16,7 @@ STATUS:  Lightly tested using Python 3.9.1
 import os
 import sys
 import mailbox
+from pathlib import Path
 
 global debug
 debug = True
@@ -35,17 +36,16 @@ def main( arguments ):
         if debug:
             print("Detected directory as input, using directory mode")
         count = 0
-        for filename in os.listdir(infile_name):
-            if filename.split('.')[-1] == "eml":
-                try:
-                    fi = open(os.path.join(infile_name, filename), 'r')
-                except:
-                    sys.stderr.write("Error while opening " + filename + "\n")
-                    dest_mbox.close()
-                    raise
-                addFileToMbox( fi, dest_mbox )
-                count += 1
-                fi.close()
+        for filename in Path(infile_name).rglob('*.eml'):
+            try:
+                fi = open(os.path.join(filename), 'r')
+            except:
+                sys.stderr.write("Error while opening " + filename + "\n")
+                dest_mbox.close()
+                raise
+            addFileToMbox( fi, dest_mbox )
+            count += 1
+            fi.close()
         if debug:
             print("Processed " + str(count) + " total files.")
     
