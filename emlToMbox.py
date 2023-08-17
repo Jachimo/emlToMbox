@@ -21,17 +21,19 @@ from pathlib import Path
 global debug
 debug = True
 
-def main( arguments ):
+
+def main(arguments):
     infile_name = arguments[1]
     dest_name = arguments[2]
-    
+
     if debug:
         print("Input is:  " + infile_name)
         print("Output is: " + dest_name)
-    
-    dest_mbox = mailbox.mbox(dest_name, create=True) # if dest doesn't exist create it
-    dest_mbox.lock() # lock the mbox file
-    
+
+    # if dest doesn't exist create it
+    dest_mbox = mailbox.mbox(dest_name, create=True)
+    dest_mbox.lock()  # lock the mbox file
+
     if os.path.isdir(infile_name):
         if debug:
             print("Detected directory as input, using directory mode")
@@ -43,12 +45,12 @@ def main( arguments ):
                 sys.stderr.write("Error while opening " + filename + "\n")
                 dest_mbox.close()
                 raise
-            addFileToMbox( fi, dest_mbox )
+            addFileToMbox(fi, dest_mbox)
             count += 1
             fi.close()
         if debug:
             print("Processed " + str(count) + " total files.")
-    
+
     if infile_name.split('.')[-1] == "eml":
         if debug:
             print("Detected .eml file as input, using single file mode")
@@ -58,22 +60,24 @@ def main( arguments ):
             sys.stderr.write("Error while opening " + infile_name + "\n")
             dest_mbox.close()
             raise
-        addFileToMbox( fi, dest_mbox )
+        addFileToMbox(fi, dest_mbox)
         fi.close()
-    
-    dest_mbox.close() # close/unlock the mbox file
+
+    dest_mbox.close()  # close/unlock the mbox file
     return 0
 
-def addFileToMbox( fi, dest_mbox ):
+
+def addFileToMbox(fi, dest_mbox):
     # Any additional preprocessing logic goes here...
     try:
-        dest_mbox.add( fi )
+        dest_mbox.add(fi)
     except:
         dest_mbox.close()
         raise
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
         sys.stderr.write("Usage: ./emlToMbox.py input outbox.mbox\n")
         sys.exit(1)
-    sys.exit( main( sys.argv ) )
+    sys.exit(main(sys.argv))
