@@ -1,8 +1,5 @@
 # .eml to .mbox converter
 
-Forked from Gist [kadin2048/emlToMbox.py](https://gist.github.com/kadin2048/c332a572a388acc22d56).
-
-## Info
 Converts a directory full of .eml files to a single Unix "mbox" file.
 
 Accepts as input either an individual .eml file or a directory containing one
